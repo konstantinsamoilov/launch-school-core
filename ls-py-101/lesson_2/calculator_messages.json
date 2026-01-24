@@ -1,0 +1,22 @@
+{
+    "en": {
+        "welcome": "It's calculator!",
+        "first_number": "First number?",
+        "second_number": "Second?",
+        "operation_prompt": "What would you like to do? 1) Add 2) Subtract 3) Multiply 4) Divide",
+        "invalid_number": "Invalid :(",
+        "invalid_operation": "Gotta choose 1/2/3/4!",
+        "result": "The result is:",
+        "try_again": "Wanna do it again? Type 'y' if yes"
+    },
+    "ru": {
+        "welcome": "Это калькулятор!",
+        "first_number": "Первый номер?",
+        "second_number": "Второй?",
+        "operation_prompt": "Что бы вы хотели сделать? 1) Сложить 2) Вычесть 3) Умножить 4) Делить",
+        "invalid_number": "Неверный номер :(",
+        "invalid_operation": "Нужно выбрать 1/2/3/4!",
+        "result": "Результат:",
+        "try_again": "Ещё раз? Если да, пиши 'д'"
+    }
+}
