@@ -1,5 +1,3 @@
-# ~ What to study next? PY109 study guide difficulty ranker. ~
-
 import random
 
 TOPICS = [
@@ -20,8 +18,7 @@ TOPICS = [
     "Dictionary methods: dict.keys(), dict.values(), dict.items(), dict.get()",
     "Slicing (strings, lists, tuples)",
     "Arithmetic operators: +, -, *, /, //, %, **",
-    "String operators: +",
-    "List operators: +",
+    "List and string operators: +",
     "Comparison operators: ==, !=, <, >, <=, >=",
     "Logical operators: and, or, not",
     "Identity operators: is, is not",
@@ -34,8 +31,9 @@ TOPICS = [
     "Variables: global keyword",
     "Variables: variables as pointers",
     "Variables: variable shadowing",
-    "Conditionals and loops: for",
-    "Conditionals and loops: while",
+    "Conditionals",
+    "Loops: for",
+    "Loops: while",
     "The len() function",
     "print() and input()",
     "Exceptions (when they will occur and how to handle them)",
@@ -101,7 +99,7 @@ prompt("always including the two you've just compared with an asterisk '*', ")
 prompt("and a '(0/0)' counter, for how often a topic was more/less difficult.")
 print("")
 prompt("Every comparison pair is unique.")
-prompt("There are 41 topics and 861 comparison pairs.")
+prompt("There are 42 topics and 861 comparison pairs.")
 prompt("When you quit with 'q', you'll see all the topics you've compared.")
 print("")
 
