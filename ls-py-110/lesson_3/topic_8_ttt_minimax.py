@@ -117,11 +117,6 @@ def player_chooses_square(board, player_marker):
 
     board[int(square)] = player_marker
 
-'''
-def empty_squares(board):
-    return [key for key, value in board.items() if value == INITIAL_MARKER]
-'''
-
 def minimax(temp_board, is_computer, player_marker, computer_marker):
     if detect_winner(temp_board, player_marker, computer_marker) == 'Computer':
         return 10
