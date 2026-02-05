@@ -64,7 +64,6 @@ best_move doesn't get updated afterwards. And it doesn't select the 5 square by 
 
 import os
 import random
-from copy import copy
 
 INITIAL_MARKER = ' '
 X_MARKER = 'X'
@@ -214,11 +213,30 @@ def alternate_player(current_player, player_marker, computer_marker):
         current_player = player_marker
         return current_player
 
-def play_tic_tac_toe(player_marker, computer_marker, current_player):
+def play_tic_tac_toe():
+    prompt(f"(You can play a match, until you or the computer have 5 wins.)")
     player_score = 0
     computer_score = 0
-    
+
     while True:
+        prompt("Who should go first and have the X markers? " \
+                "Type 'Player', 'Computer', or anything else to randomize.")
+        who_goes_first = input().lower()
+
+        if who_goes_first == 'Player'.lower():
+            player_marker = 'X'
+            computer_marker = 'O'
+            current_player = player_marker
+        elif who_goes_first == 'Computer'.lower():
+            player_marker = 'O'
+            computer_marker = 'X'
+            current_player = computer_marker
+        else:
+            markers = [X_MARKER, O_MARKER]
+            random.shuffle(markers)
+            player_marker, computer_marker = markers
+            current_player = X_MARKER
+
         board = initialize_board()
         
         while True:
@@ -267,25 +285,4 @@ def play_tic_tac_toe(player_marker, computer_marker, current_player):
 
     prompt('Thanks for playing!')
 
-os.system('clear')
-
-prompt(f"(You can play a match, until you or the computer have 5 wins.)")
-prompt("Who should go first and have the X markers? " \
-        "Type 'Player', 'Computer', or anything else for randomization.")
-who_goes_first = input().lower()
-
-if who_goes_first == 'Player'.lower():
-    player_marker = 'X'
-    computer_marker = 'O'
-    current_player = player_marker
-elif who_goes_first == 'Computer'.lower():
-    player_marker = 'O'
-    computer_marker = 'X'
-    current_player = computer_marker
-else:
-    markers = [X_MARKER, O_MARKER]
-    random.shuffle(markers)
-    player_marker, computer_marker = markers
-    current_player = X_MARKER
-
-play_tic_tac_toe(player_marker, computer_marker, current_player)
+play_tic_tac_toe()
