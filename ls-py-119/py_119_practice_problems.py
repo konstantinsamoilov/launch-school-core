@@ -1,6 +1,169 @@
 # 119 Practice Problems
 
+# 1:
+
+'''
+Create a function that takes a list of numbers as an argument. 
+For each number, determine how many numbers in the list are smaller than it, and place the answer in a list. 
+Return the resulting list.
+
+When counting numbers, only count unique values. 
+That is, if a number occurs multiple times in the list, it should only be counted once.
+
+Rules:
+1. Create a function that takes a list of numbers as argument.
+2. For each number, find how many numbers in the list are smaller than it, put answer in a list.
+3. Return answer list.
+4. Only count unique values in the argument list.
+
+Input: list
+Output: list
+Also: set
+
+Algo:
+Create a 'result_list' list
+For each number in the list, create a counter of "larger than other numbers".
+See if it's larger than every number in the set version of the list (including the number we're checking against, but that's fine in this case).
+If it is, increment counter by 1.
+At the end of each check, add each counter to result_list. Reset counter to 0 for the next number.
+Return result_list.
+'''
+
+def smaller_numbers_than_current(lst):
+    result_list = []
+
+    for number in lst:
+        counter = 0
+        for unique_num in set(lst):
+            if number > unique_num:
+                counter += 1
+        result_list.append(counter)
+
+    return result_list
+
+print(smaller_numbers_than_current([8, 1, 2, 2, 3]) == [3, 0, 1, 1, 2])
+print(smaller_numbers_than_current([7, 7, 7, 7]) == [0, 0, 0, 0])
+print(smaller_numbers_than_current([6, 5, 4, 8]) == [2, 1, 0, 3])
+print(smaller_numbers_than_current([1]) == [0])
+
+my_list = [1, 4, 6, 8, 13, 2, 4, 5, 4]
+result = [0, 2, 4, 5, 6, 1, 2, 3, 2]
+print(smaller_numbers_than_current(my_list) == result)
+
+# 2:
+
+'''
+Create a function that takes a list of integers as an argument. 
+The function should return the minimum sum of 5 consecutive numbers in the list. 
+If the list contains fewer than 5 elements, the function should return None.
+
+Rules:
+1. Create a function that takes a list of integers.
+2. Return minimum sum of 5 consecutive numbers in list.
+3. If list contains fewer than 5 elements, return None.
+
+Input: list
+Output: integer
+Also: 2nd list
+
+Algo:
+If the length of list is less than 5, return None.
+Create an empty 'sums_list' list.
+
+Create a start_idx, set to 0
+Create a end_idx, set to 5
+
+for operations in range from 0 to len(lst) - 4 (- 4, not - 5, because range does not include the last iteration):
+    append sum of slice lst[start_idx:end_idx]
+    increment start_idx and end_idx by 1
+
+return minimum number in sums_list
+'''
+
+def minimum_sum(lst):
+    if len(lst) < 5:
+        return None
+
+    sums_list = []
+
+    start_idx = 0
+    end_idx = 5
+
+    for _ in range(len(lst) - 4):
+        sums_list.append(sum(lst[start_idx:end_idx]))
+        start_idx += 1
+        end_idx += 1
+        
+    print(sums_list)
+
+    return min(sums_list)
+
+print(minimum_sum([1, 2, 3, 4]) is None)
+print(minimum_sum([1, 2, 3, 4, 5, -5]) == 9)
+print(minimum_sum([1, 2, 3, 4, 5, 6]) == 15)
+print(minimum_sum([55, 2, 6, 5, 1, 2, 9, 3, 5, 100]) == 16)
+print(minimum_sum([-1, -5, -3, 0, -1, 2, -4]) == -10)
+
+# 3:
+
+'''
+Create a function that takes a string argument and returns a copy of the string with every second character in every third word converted to uppercase. Other characters should remain the same.
+
+Rules:
+1. Function. Take a string arg, return string with every 2nd char in every 3rd word uppercased.
+
+Input: string
+Output: string
+Also: list, 
+
+Algo:
+Split string into strings along empty spaces, into 'list_of_words' strings
+
+For-loop of index over range from 2 (3rd position) to length of list_of_words, every 3rd word
+    Create a 'new_word' empty string
+    Inner for-loop of char_index over range from 0 to length of current word being looked at
+        If the char_index is even:
+            Add char_index to new_word
+        If it's odd:
+            Add an uppercased char_index to new_word
+    At end of inner for-loop, reassign the current word in list_of_words to new_word
+
+At end of outer for-loop, create a 'result_string' that is the updated list_of_words .join-ed with spaces
+Return result_string
+'''
+
+def to_weird_case(s):
+    list_of_words = s.split(' ')
+    
+    for i in range(2, len(list_of_words), 3):
+        new_word = ''
+        for char_idx in range(len(list_of_words[i])):
+            if char_idx % 2 == 0:
+                new_word += list_of_words[i][char_idx]
+            else:
+                new_word += list_of_words[i][char_idx].upper()
+        list_of_words[i] = new_word
+
+    result_string = ' '.join(list_of_words)
+    return result_string
+
+
+original = 'Lorem Ipsum is simply dummy text of the printing world'
+expected = 'Lorem Ipsum iS simply dummy tExT of the pRiNtInG world'
+print(to_weird_case(original) == expected)
+
+original = 'It is a long established fact that a reader will be distracted'
+expected = 'It is a long established fAcT that a rEaDeR will be dIsTrAcTeD'
+print(to_weird_case(original) == expected)
+
+print(to_weird_case('aaA bB c') == 'aaA bB c')
+
+original = "Mary Poppins' favorite word is supercalifragilisticexpialidocious"
+expected = "Mary Poppins' fAvOrItE word is sUpErCaLiFrAgIlIsTiCeXpIaLiDoCiOuS"
+print(to_weird_case(original) == expected)
+
 # 4:
+
 '''
 Create a function that takes a list of integers as an argument and returns a tuple of two numbers that are closest together in value. If there are multiple pairs that are equally close, return the pair that occurs first in the list.
 
@@ -48,7 +211,9 @@ print(closest_numbers([12, 22, 7, 17]) == (12, 7))
 # 5:
 
 '''
-Create a function that takes a string argument and returns the character that occurs most often in the string. If there are multiple characters with the same greatest frequency, return the one that appears first in the string. When counting characters, consider uppercase and lowercase versions to be the same.
+Create a function that takes a string argument and returns the character that occurs most often in the string. 
+If there are multiple characters with the same greatest frequency, return the one that appears first in the string. 
+When counting characters, consider uppercase and lowercase versions to be the same.
 
 Rules:
 1. Return the char that occurs most often in input string
@@ -648,8 +813,11 @@ print(distinct_multiples('3141592653589793') == 4)  # 3, 1, 5, 9
 print(distinct_multiples('2718281828459045') == 5)  # 2, 1, 8, 4, 5
 
 # 17:
+
 '''
-Create a function that takes a list of integers as an argument. The function should determine the minimum integer value that can be appended to the list so the sum of all the elements equals the closest prime number that is greater than the current sum of the numbers. For example, the numbers in [1, 2, 3] sum to 6. The nearest prime number greater than 6 is 7. Thus, we can add 1 to the list to sum to 7.
+Create a function that takes a list of integers as an argument. 
+The function should determine the minimum integer value that can be appended to the list so the sum of all the elements equals the closest prime number that is greater than the current sum of the numbers. 
+For example, the numbers in [1, 2, 3] sum to 6. The nearest prime number greater than 6 is 7. Thus, we can add 1 to the list to sum to 7.
 
 Notes:
 The list will always contain at least 2 integers.
@@ -657,76 +825,62 @@ All values in the list must be positive (> 0).
 There may be multiple occurrences of the various numbers in the list.
 
 Rules:
-1. Determine minimum integer that can be added to list so the sum equals closest prime number that's > CURRENT sum
-2. List will have 2+ integers
-3. All ints in list are positive
-4. Ints in list can repeat
+1. Function takes list of integers.
+2. Determine minimum integer that can be added so the sum of all elements == closest prime number greater than current sum.
+3. List will have 2+ integers, all positive, and same integers can appear.
 
-Input: list (of integers)
-Output: integer (to be added to list)
-Also: range
+Input: list
+Output: integer
+Also: range, boolean
 
-Algorithm:
+Algo:
+Create a 'is_prime' helper function (takes 1 argument, is_prime_num).
+    For-loop of num over range of 2 to is_prime_num:
+        If is_prime_num % num is 0:
+            return False (not a prime num)
+        return True (prime num)
 
-As the counter counts up, if you divide summed + counter and it doesn't equal 1 for anything except
-for dividing by 1 and itself, then we set that as 'nearest_prime'
+In nearest_prime_sum:
+    Create a prime_not_found boolean, set to True
 
-Init 'nearest_prime', point to 0
+    Create a 'sum_of_input_list', point to sum(lst)
 
-Init 'summed', point to sum of input list
+    Create 'counter', set to 0
 
-Init 'counter', point to 1
+    While-loop, while prime_not_found:
+        Increment counter by 1
+        If the call to is_prime with argument sum_of_input_list + counter is True:
+            Set prime_not_found to False
 
-Init 'summed_and_counter', point to summed + counter
+    Then we just need to find what to add:
+    Create 'next_prime', point to sum_of_input_list + counter
+    Create 'to_add_to_list', point to next_prime - sum_of_input_list
+    Return to_add_to_list integer
 
-while-loop of 'nearest_prime' == 0:
-    for-loop over 'dividing_by' in range of summed_and_counter + 1:
-        if sum + counter 
-
-We have nearest_prime
 '''
+def is_prime(is_prime_num):
+    for num in range(2, is_prime_num):
+        if is_prime_num % num == 0:
+            return False
+    return True
+
 def nearest_prime_sum(lst):
-    nearest_prime = 0
-    summed = sum(lst)
-    counter = 1
-    summed_and_counter = summed + counter
-    # 7 % 7 range(2, curr)
-    # 7 2...6 don't have modulo 0 prime  
+    prime_not_found = True
 
-# (nearest_prime_sum([5, 2]) == 4)
-#     sum = 7
-#     when we do [potential prime number] % [an iterating dividing_by] (2, 3, 4, 5, 6): if all of them are 0, then it's not a prime number
-# 8 [2, 4] not prime 
-# [2, 3, 4, 5, 6, 7]
-# 8 % num == 0
-# 8 is divisible by any of the nums among [2, 3, 4, 5, 6, 7]
-# 2 num - 1 
-'''
-a whole number greater than 1 that cannot be exactly divided by any whole number other than itself and 1 (e.g. 2, 3, 5, 7, 11).
-'''
-# so if you were to iterate potential prime number dividing by 2, 3, 4, 5, 6 and put the results into a LIST, if any of them are not 1, it's a prime number
-    
-    while nearest_prime == 0:
+    sum_of_input_list = sum(lst)
+
+    counter = 0
+
+    while prime_not_found:
+        counter += 1
+        call_to_prime = is_prime(sum_of_input_list + counter)
+        if call_to_prime == True:
+            prime_not_found = False
         
-    
-
-
-        for dividing_by in range(1, summed_and_counter + 1):
-            if summed_and_counter == 1 only when it's divided by 1 and summed_and_counter
-            
-            if summed_and_counter != 1 when divided by anything between 2 and summed_and_counter - 1
-
-
-
-            / dividing_by == 
-            # if you divide summed + counter and it doesn't equal 1 for anything except
-# for dividing by 1 and itself, then we set that as 'nearest_prime'
-            counter += 1
-                
-# range(summed_and_counter + 1)
-# range(0, summed_and_counter + 1)
-# 0.... summed_and_counter 
-
+    next_prime = sum_of_input_list + counter
+    to_add_to_list = next_prime - sum_of_input_list
+    return to_add_to_list
+        
 print(nearest_prime_sum([1, 2, 3]) == 1)        # Nearest prime to 6 is 7
 print(nearest_prime_sum([5, 2]) == 4)           # Nearest prime to 7 is 11
 print(nearest_prime_sum([1, 1, 1]) == 2)        # Nearest prime to 3 is 5
@@ -734,8 +888,6 @@ print(nearest_prime_sum([2, 12, 8, 4, 6]) == 5) # Nearest prime to 32 is 37
 
 # Nearest prime to 163 is 167
 print(nearest_prime_sum([50, 39, 49, 6, 17, 2]) == 4)
-
-#  summed_and_counter + 1 % dividing_by == 0:
 
 # 18:
 
@@ -804,3 +956,69 @@ print(equal_sum_index([0, 2, 4, 4, 2, 3, 2]) == -1)
 # supposed to return the smallest correct index, the correct
 # return value is 0.
 print(equal_sum_index([0, 20, 10, -60, 5, 25]) == 0)
+
+# 19:
+
+'''
+Create a function that takes a list of integers as an argument and returns the integer that appears an odd number of times. There will always be exactly one such integer in the input list.
+
+Rules:
+1. Take a list of integers, return the one integer that appears an odd number of times in the list.
+Implicit:
+1. There could be just one kind of integer in the list.
+
+Input: list
+Output: integer
+Also:
+
+Algo:
+For-loop of num in input list:
+    Use .count(num) to count the appearances of current integer in list
+    If the remainder of input_list.count(num) divided by 2 is not 0:
+        return num 
+'''
+
+def odd_fellow(lst):
+    for num in lst:
+        if lst.count(num) % 2 != 0:
+            return num
+
+print(odd_fellow([4]) == 4)
+print(odd_fellow([7, 99, 7, 51, 99]) == 51)
+print(odd_fellow([7, 99, 7, 51, 99, 7, 51]) == 7)
+print(odd_fellow([25, 10, -6, 10, 25, 10, -6, 10, -6]) == -6)
+print(odd_fellow([0, 0, 0]) == 0)
+
+# 20:
+
+'''
+Create a function that takes a list of numbers, all of which are the same except one. 
+Find and return the number in the list that differs from all the rest.
+The list will always contain at least 3 numbers, and there will always be exactly one number that is different.
+
+Rules:
+1. Take a list of numbers that are the same except for one.
+2. Return the number that differs from the rest.
+3. The list will have 3+ numbers.
+Implicit:
+1. Floats can be in the list.
+
+Input: list
+Output: integer / float
+
+Algo:
+For-loop for number in input list:
+    If the call to input_list.count(number) is 1:
+        Return number
+'''
+
+def what_is_different(lst):
+    for num in lst:
+        if lst.count(num) == 1:
+            return num
+
+print(what_is_different([0, 1, 0]) == 1)
+print(what_is_different([7, 7, 7, 7.7, 7]) == 7.7)
+print(what_is_different([1, 1, 1, 1, 1, 1, 1, 11, 1, 1, 1, 1]) == 11)
+print(what_is_different([3, 4, 4, 4]) == 3)
+print(what_is_different([4, 4, 4, 3]) == 3)
