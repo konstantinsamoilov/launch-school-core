@@ -1,28 +1,27 @@
 '''
 Minimax algorithm:
-There is one new function, minimax, and one completely rewritten function, computer_chooses_square.
+There is one new function, minimax, and one rewritten function, computer_chooses_square.
 
 computer_chooses_square is called from choose_square, as the opposite of player_chooses_square.
 
-1. Init best_score to point to -11, lower than our absolute minimum for minimax.
+1. Initialize best_score to point to -11, lower than our absolute minimum for minimax.
     best_score points to the value of the best of the outcomes of the computer choosing a particular square as the next square.
 
-2. Init best_move to None, so far.
+2. Initialize best_move to None, at the start.
+    computer_chooses_square sees the current state of the board.
 
-computer_chooses_square sees the current state of the board.
+3. For each square of the squares that are still empty,
+    1. create a temporary board and point it to the copy of the current board,
+    2. mark that square on the temporary board with the computer marker,
+    3. and call `minimax`, passing it the temporary board and a 'False' boolean, signifying that the next turn is the player's.
 
-3. For each square in the squares that are still empty,
-    create a temporary board and point it to the copy of the current board,
-    mark that square on the temporary board with the computer marker,
-    and call minimax, passing it the temporary board and a 'False' boolean, signifying that the next turn is the player's
+4. minimax runs. Immediately it calls detect_winner and board_full with the temporary board.
+    Those two functions check if there are winning lines or no more moves to be made. if not, then:
 
-4. minimax runs. immediately it calls detect_winner and board_full with the temporary board.
-    those two functions check if there are winning lines or no more moves to be made. if not,
+5. If it's the computer's turn (boolean would be True), 
+    best_outcome points to -11. This is the outcome of perfect continuation of play from that one square...
 
-5.   if it's the computer's turn (boolean would be True), 
-        best_outcome points to -11. this is the outcome of perfect continuation of play from that one square
-
-5.5. but it is also the best outcome for each particular tree, and each move (depending on where minimax is)
+5.5. But it is also the best outcome for each particular tree, and each move (depending on where minimax is).
 
 "The deepest call (let's say Level 9) is on a full board. It's a tie. It hits a base case and returns 0.
 Where does it return to? To the paused Level 8 function that called it.
@@ -35,26 +34,27 @@ Where does it return to? To the paused Level 7 function that called it.
 Level 7 receives the value from Level 8, uses it in its own calculation,
 finishes its loop, and returns its own result to Level 6."
 
-6.      for each empty square in the temporary board that minimax got,
+6.      For each empty square in the temporary board that minimax got,
             create a 'minimax_temp_board' by copying temp_board
-            (so basically a clone of temp_board, every time)
-            then, mark that square on minimax_temp_board with the computer marker
+            (so basically a clone of temp_board, every time).
+            Then, mark that square on minimax_temp_board with the computer marker.
 
-            then, init 'score' and point it to the recursive call of minimax, passing it minimax_temp_board and boolean False (so player would move next)
-            that will return -10, 0 or 10 (as best_outcome), which score will point to.
-            then point best_outcome once more, to the maximum of best_outcome and score
-                as recursive minimax is called for different minimax_temp_boards, best_outcome will be updated
+            Then, init 'score' and point it to the recursive call of minimax, passing it minimax_temp_board and boolean False (so player would move next).
+            That will return -10, 0 or 10 (as best_outcome), which `score` will point to.
 
-        for the player, the logic is the same, except best_outcome will be selected from the minimum of best_outcome and score
+            Then point best_outcome once more, to the maximum of best_outcome and score.
+            As recursive minimax is called for different minimax_temp_boards, best_outcome will be updated.
+
+            For the player, the logic is the same, except best_outcome will be selected from the MINIMUM of best_outcome and score.
 
 7. Once minimax finishes running for the initial square that computer_chooses_square passed it,
     'return best_outcome' returns into 'move_score = minimax(temp_board, False, player_marker, computer_marker)'
     and becomes 'move_score'
 
-8. if that move_score is higher than the best_score so far, best_score is updated to it,
+8. If that move_score is higher than the best_score so far, best_score is updated to it,
     and the current square being assessed is also now what best_move will point to.
 
-9. after all the squares are assessed, if there is a best_move (there will be one),
+9. After all the squares are assessed, if there is a best_move (there will be one),
     the best_move (an integer) on the real board will refer to 'computer_marker', and so the board will be marked.
 
 P.S. When playing via this, the computer will always choose the same square for any particular position, because
@@ -116,7 +116,7 @@ def player_chooses_square(board, player_marker):
 
     board[int(square)] = player_marker
 
-def minimax(temp_board, is_computer, player_marker, computer_marker):
+def minimax(temp_board, computer_next, player_marker, computer_marker):
     if detect_winner(temp_board, player_marker, computer_marker) == 'Computer':
         return 10
     elif detect_winner(temp_board, player_marker, computer_marker) == 'Player':
@@ -124,7 +124,7 @@ def minimax(temp_board, is_computer, player_marker, computer_marker):
     elif board_full(temp_board):
         return 0
     
-    if is_computer:
+    if computer_next:
         best_outcome = -11
 
         for square in empty_squares(temp_board):
@@ -154,7 +154,7 @@ def computer_chooses_square(board, player_marker, computer_marker):
         temp_board = board.copy()
         temp_board[square] = computer_marker
 
-        move_score = minimax(temp_board, False, player_marker, computer_marker)
+        move_score = minimax(temp_board, computer_next=False, player_marker=player_marker, computer_marker=computer_marker)
 
         if move_score > best_score:
             best_score = move_score

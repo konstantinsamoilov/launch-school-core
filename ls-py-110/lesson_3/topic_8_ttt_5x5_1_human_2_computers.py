@@ -19,14 +19,12 @@ Tic-Tac-Toe (5x5 with two computers and one human):
 
 6. 'who_is_who' prints players in order of X-O-I specifically.
 
-7. 'computer_chooses_square' has basically the same code twice for the two AIs. Could be consolidated.
+7. 'alternate_player' now flips between the three types of markers.
 
-8. 'alternate_player' now flips between the three types of markers.
+8. 'play_tic_tac_toe' now does not take any arguments, and scores and shuffling of markers is now done
+    inside the function. Also updated the other versions of tic-tac-toe to do this.
 
-9. 'play_tic_tac_toe' now does not take any arguments, and scores and shuffling of markers is now done
-    inside the function. Also updating the other versions of tic-tac-toe to do this.
-
-10. The AIs are named after Amadou & Mariam, a pop duo from Mali. <3
+9. The AIs are named after Amadou & Mariam, a pop duo from Mali. <3
 '''
 
 import random
@@ -114,8 +112,8 @@ def player_chooses_square(board, player_marker):
 
     board[int(square)] = player_marker
 
-def computer_chooses_square(board, player_marker, amadou_marker, mariam_marker, current_player):
-    if current_player == amadou_marker:
+def computer_chooses_square(board, player_marker, current_player, player_names):
+        current_player_name = player_names[current_player]
 
         if len(empty_squares(board)) == 0:
             return
@@ -124,11 +122,11 @@ def computer_chooses_square(board, player_marker, amadou_marker, mariam_marker, 
             sq1, sq2, sq3, sq4 = line
             markers_in_line = [board[sq] for sq in line]
 
-            if markers_in_line.count(amadou_marker) == 3 and markers_in_line.count(INITIAL_MARKER) == 1:
+            if markers_in_line.count(current_player) == 3 and markers_in_line.count(INITIAL_MARKER) == 1:
                 initial_marker_sq_idx = markers_in_line.index(INITIAL_MARKER)
                 marker_goes_here = line[initial_marker_sq_idx]
-                prompt(f'Amadou selects square {marker_goes_here}.')
-                board[marker_goes_here] = amadou_marker
+                prompt(f'{current_player_name} selects square {marker_goes_here}.')
+                board[marker_goes_here] = current_player
                 return
             
         for line in WINNING_LINES:
@@ -138,13 +136,13 @@ def computer_chooses_square(board, player_marker, amadou_marker, mariam_marker, 
             if markers_in_line.count(player_marker) == 3 and markers_in_line.count(INITIAL_MARKER) == 1:
                 initial_marker_sq_idx = markers_in_line.index(INITIAL_MARKER)
                 marker_goes_here = line[initial_marker_sq_idx]
-                prompt(f'Amadou selects square {marker_goes_here}.')
-                board[marker_goes_here] = amadou_marker
+                prompt(f'{current_player_name} selects square {marker_goes_here}.')
+                board[marker_goes_here] = current_player
                 return
             
         if board[13] == ' ':
-            prompt(f'Amadou selects square 13.')
-            board[13] = amadou_marker
+            prompt(f'{current_player_name} selects square 13.')
+            board[13] = current_player
             return
 
         second_tier_initial_markers = []
@@ -154,8 +152,8 @@ def computer_chooses_square(board, player_marker, amadou_marker, mariam_marker, 
 
         if second_tier_initial_markers:
             second_tier_random_square = random.choice(second_tier_initial_markers)
-            prompt(f'Amadou selects square {second_tier_random_square}.')
-            board[second_tier_random_square] = amadou_marker
+            prompt(f'{current_player_name} selects square {second_tier_random_square}.')
+            board[second_tier_random_square] = current_player
             return
 
         third_tier_initial_markers = []
@@ -165,8 +163,8 @@ def computer_chooses_square(board, player_marker, amadou_marker, mariam_marker, 
 
         if third_tier_initial_markers:
             third_tier_random_square = random.choice(third_tier_initial_markers)
-            prompt(f'Amadou selects square {third_tier_random_square}.')
-            board[third_tier_random_square] = amadou_marker
+            prompt(f'{current_player_name} selects square {third_tier_random_square}.')
+            board[third_tier_random_square] = current_player
             return
         
         fourth_tier_initial_markers = []
@@ -176,73 +174,8 @@ def computer_chooses_square(board, player_marker, amadou_marker, mariam_marker, 
 
         if fourth_tier_initial_markers:
             fourth_tier_random_square = random.choice(fourth_tier_initial_markers)
-            prompt(f'Amadou selects square {fourth_tier_random_square}.')
-            board[fourth_tier_random_square] = amadou_marker
-            return
-
-    elif current_player == mariam_marker:
-
-        if len(empty_squares(board)) == 0:
-            return
-
-        for line in WINNING_LINES:
-            sq1, sq2, sq3, sq4 = line
-            markers_in_line = [board[sq] for sq in line]
-
-            if markers_in_line.count(mariam_marker) == 3 and markers_in_line.count(INITIAL_MARKER) == 1:
-                initial_marker_sq_idx = markers_in_line.index(INITIAL_MARKER)
-                marker_goes_here = line[initial_marker_sq_idx]
-                prompt(f'Mariam selects square {marker_goes_here}.')
-                board[marker_goes_here] = mariam_marker
-                return
-            
-        for line in WINNING_LINES:
-            sq1, sq2, sq3, sq4 = line
-            markers_in_line = [board[sq] for sq in line]
-
-            if markers_in_line.count(player_marker) == 3 and markers_in_line.count(INITIAL_MARKER) == 1:
-                initial_marker_sq_idx = markers_in_line.index(INITIAL_MARKER)
-                marker_goes_here = line[initial_marker_sq_idx]
-                prompt(f'Mariam selects square {marker_goes_here}.')
-                board[marker_goes_here] = mariam_marker
-                return
-            
-        if board[13] == ' ':
-            prompt(f'Mariam selects square 13.')
-            board[13] = mariam_marker
-            return
-
-        second_tier_initial_markers = []
-        for sq in SECOND_TIER:
-            if board[sq] == INITIAL_MARKER:
-                second_tier_initial_markers.append(sq)
-
-        if second_tier_initial_markers:
-            second_tier_random_square = random.choice(second_tier_initial_markers)
-            prompt(f'Mariam selects square {second_tier_random_square}.')
-            board[second_tier_random_square] = mariam_marker
-            return
-
-        third_tier_initial_markers = []
-        for sq in THIRD_TIER:
-            if board[sq] == INITIAL_MARKER:
-                third_tier_initial_markers.append(sq)
-
-        if third_tier_initial_markers:
-            third_tier_random_square = random.choice(third_tier_initial_markers)
-            prompt(f'Mariam selects square {third_tier_random_square}.')
-            board[third_tier_random_square] = mariam_marker
-            return
-        
-        fourth_tier_initial_markers = []
-        for sq in FOURTH_TIER:
-            if board[sq] == INITIAL_MARKER:
-                fourth_tier_initial_markers.append(sq)
-
-        if fourth_tier_initial_markers:
-            fourth_tier_random_square = random.choice(fourth_tier_initial_markers)
-            prompt(f'Mariam selects square {fourth_tier_random_square}.')
-            board[fourth_tier_random_square] = mariam_marker
+            prompt(f'{current_player_name} selects square {fourth_tier_random_square}.')
+            board[fourth_tier_random_square] = current_player
             return
     
 def empty_squares(board):
@@ -284,11 +217,11 @@ def join_or(lst, sepr=', ', last_sepr='or'):
         all_but_last_string = sepr.join(string_items_in_list)
         return f"{all_but_last_string}{sepr}{last_sepr} {lst[-1]}"
     
-def choose_square(board, player_marker, amadou_marker, mariam_marker, current_player):
+def choose_square(board, player_marker, current_player, player_names):
     if current_player == player_marker:
         player_chooses_square(board, player_marker)
     else:
-        computer_chooses_square(board, player_marker, amadou_marker, mariam_marker, current_player)
+        computer_chooses_square(board, player_marker, current_player, player_names)
 
 def alternate_player(current_player):
     if current_player == X_MARKER:
@@ -313,15 +246,24 @@ def play_tic_tac_toe():
         board = initialize_board()
         markers = [X_MARKER, O_MARKER, I_MARKER]
         random.shuffle(markers)
+
         player_marker, amadou_marker, mariam_marker = markers
+
+        player_names = {
+            player_marker: 'Player',
+            amadou_marker: 'Amadou',
+            mariam_marker: 'Mariam'
+        }
+
         current_player = X_MARKER
         second_player = O_MARKER
         third_player = I_MARKER
+
         who_is_who(player_marker, amadou_marker, mariam_marker, current_player, second_player, third_player)
-        
+
         while True:
             display_board(board)
-            choose_square(board, player_marker, amadou_marker, mariam_marker, current_player)
+            choose_square(board, player_marker, current_player, player_names)
             current_player = alternate_player(current_player)
 
             if someone_won(board, player_marker, amadou_marker, mariam_marker) or board_full(board):

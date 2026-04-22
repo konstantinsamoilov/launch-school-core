@@ -8,7 +8,7 @@
     second tier, with eight numbers that are part of three types of lines (row, column, diagonal);
     third tier, the rest of the numbers, that are part of two types of lines (row and column)
 
-    We create constants for squares in those two tiers.
+    We create list constants for squares in those two tiers.
     Then, in the function, we init a 'second_tier_initial_markers' empty list,
         and for square in SECOND_TIER,
             if that square on the board is an INITIAL_MARKER,
@@ -18,7 +18,7 @@
         we choose randomly between the squares,
             and computer_marks that picked square.
 
-    Same for third tier.
+    We do the same for third tier.
 '''
 
 import os
